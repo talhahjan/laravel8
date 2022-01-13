@@ -52,14 +52,11 @@
               <div class="row">
                 <div class="col">
                   <div class="form-group">
-                    <label>Parent Category</label>
+                    <label>Section/Department</label>
                                             
-<select  class="form-control" name="parent_id"  style="width: 100%;">
-<option value="0">Top Level</option>
-<?php $__currentLoopData = $parents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-
-<option value="<?php echo e($category->id); ?>"><?php echo e($category->title); ?></option>
-
+<select  class="form-control" name="section_id"  style="width: 100%;">
+<?php $__currentLoopData = $sections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $section): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<option value="<?php echo e($section->id); ?>"><?php echo e($section->title); ?></option>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 </select>
                   </div>

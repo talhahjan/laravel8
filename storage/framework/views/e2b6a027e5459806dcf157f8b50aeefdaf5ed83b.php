@@ -64,7 +64,7 @@
                             <td>
                                 <?php if($product->categories()->count() > 0): ?>
                                 <?php $__currentLoopData = $product->categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php echo e($category->title); ?>,
+                                <?php echo e($category->section->title. '/' .$category->title); ?>,
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <?php else: ?>
                                 <strong>No thumbnail</strong>

@@ -53,14 +53,11 @@
               <div class="row">
                 <div class="col">
                   <div class="form-group">
-                    <label>Parent Category</label>
+                    <label>Section/Department</label>
                                             
-<select  class="form-control" name="parent_id"  style="width: 100%;">
-<option value="0">Top Level</option>
-@foreach($parents as $category)
-
-<option value="{{$category->id}}">{{$category->title}}</option>
-
+<select  class="form-control" name="section_id"  style="width: 100%;">
+@foreach($sections as $section)
+<option value="{{$section->id}}">{{$section->title}}</option>
 @endforeach
 </select>
                   </div>

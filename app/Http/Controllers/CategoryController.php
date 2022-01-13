@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -18,7 +19,7 @@ class CategoryController extends Controller
     public function index()
     {
 
-        $categories = Category::orderBy('parent_id')->paginate(10);
+        $categories = Category::orderBy('section_id')->with('section')->paginate(10);
 
          return view('admin.category.index', compact('categories'));
     }
@@ -31,9 +32,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $parents=Category::where('parent_id', 0)->get();
+        $sections=Section::get();
      
-        return view('admin.category.create', compact('parents'));
+        return view('admin.category.create', compact('sections'));
     }
 
     /**
@@ -50,7 +51,7 @@ class CategoryController extends Controller
             'title' => 'required|max:255',
             'image' => 'file|mimes:jpg,png,bmp,jpeg',
             'discount' => 'numeric',
-             'parent_id' => 'required|numeric',
+             'section_id' => 'required|numeric',
         ]);
 
        
@@ -62,13 +63,8 @@ class CategoryController extends Controller
         }
 
 
-if($request->parent_id==0){
-    $slug=$request->slug;
-}
-else{
-$find=Category::find($request->parent_id);
-$slug=Str::slug($find->title." ".$request->slug);
-}
+        $find=Section::find($request->section_id);
+        $slug=Str::slug($find->title." ".$request->title);
 
 
         $category = Category::create([
@@ -82,7 +78,7 @@ $slug=Str::slug($find->title." ".$request->slug);
             'meta_title' => $request->meta_title,
             'meta_keywords' => $request->meta_keywords,
             'banner' =>  isset($path) ?  'uploads/' . $path : null,
-            'parent_id'=>$request->parent_id,
+            'section_id'=>$request->section_id,
             ]);
 
 
@@ -107,11 +103,8 @@ $slug=Str::slug($find->title." ".$request->slug);
      */
     public function edit(Category $category)
     {
-        $parents=Category::where([
-            ['parent_id', '==', 0],
-            ['id', '!=', $category->id]
-        ])->get();    
-        return view('admin.category.edit', compact('category','parents'));
+        $sections=Section::get();    
+        return view('admin.category.edit', compact('category','sections'));
     }
 
     /**
@@ -128,18 +121,13 @@ $slug=Str::slug($find->title." ".$request->slug);
             'slug' => 'required|unique:categories,slug,'.$category->id,
             'image' => 'file|mimes:jpg,png,bmp,jpeg',
             'discount' => 'numeric',
-            'parent_id' => 'numeric',
+            'section_id' => 'numeric',
 
         ]);
 
             
-        if($request->parent_id==0){
-            $slug=Str::slug($request->title);
-        }
-        else{
-        $find=Category::find($request->parent_id);
+        $find=Section::find($request->section_id);
         $slug=Str::slug($find->title." ".$request->slug);
-        }
 
         if (isset($request->banner)) {
             @unlink($category->banner);

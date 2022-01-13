@@ -189,10 +189,10 @@ Enable Discount             </label>
                         <div class="card-body">
                           
 <select  id="categories" data-placeholder="Select a categories single or multiple" class="select2 form-control" name="categories[]" multiple="multiple" style="width: 100%;">
-<?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<optgroup label="<?php echo e($category->title); ?>">
-<?php $__currentLoopData = $category->childs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<option value="<?php echo e($child->id); ?>"><?php echo e($category->title." / ".$child->title); ?></option>
+<?php $__currentLoopData = $sections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $section): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<optgroup label="<?php echo e($section->title); ?>">
+<?php $__currentLoopData = $section->categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<option value="<?php echo e($child->id); ?>"><?php echo e($section->title." / ".$child->title); ?></option>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 </select>

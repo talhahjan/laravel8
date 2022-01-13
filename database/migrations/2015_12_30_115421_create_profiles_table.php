@@ -17,10 +17,6 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->foreignId('user_id')
-            ->constrained('users')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
             $table->text('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('slug')->nullable()->unique();
@@ -31,6 +27,10 @@ class CreateProfilesTable extends Migration
             $table->string('provider_id')->nullable();
             $table->string('provider')->nullable();
             $table->string('status')->default(1);
+            $table->foreignId('user_id')
+            ->constrained('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->timestamps();
 
         });

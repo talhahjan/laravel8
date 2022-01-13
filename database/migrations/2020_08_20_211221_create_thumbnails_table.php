@@ -18,7 +18,10 @@ class CreateThumbnailsTable extends Migration
         Schema::create('thumbnails', function (Blueprint $table) {
             $table->id();
             $table->string('path');
-            $table->unsignedInteger('product_id');
+            $table->foreignId('product_id')
+            ->constrained('products')
+             ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

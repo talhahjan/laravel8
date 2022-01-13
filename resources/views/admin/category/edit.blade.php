@@ -51,12 +51,12 @@
               <div class="row">
                 <div class="col">
                   <div class="form-group">
-                    <label>Parent Category</label>
+                    <label>Section/Department</label>
             
-<select id="parent_id" class="form-control" name="parent_id" style="width: 100%;">
-<option value="0">Root Level</option>
-@foreach($parents as $child)
-<option value="{{$child->id}}"{{$category->parent_id==$child->id ? " selected": ""}}>{{$child->title}}</option>
+<select id="section_id" class="form-control" name="section_id" style="width: 100%;">
+
+@foreach($sections as $section)
+<option value="{{$section->id}}"{{$category->section_id==$section->id ? " selected": ""}}>{{$section->title}}</option>
 @endforeach
 </select>
                   </div>

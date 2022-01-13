@@ -26,22 +26,20 @@
                             <th>#</th>
                             <th>Title</th>
                             <th>Products</th>
-                            <th>parent</th>
+                            <th>Section</th>
                             <th>description</th>
                             <th>slug</th>
                             <th>Actions</th>
-
-
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if($categories->count() > 0): ?>
+                    <?php if($categories->count() > 0): ?>
                         <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr id="<?php echo e($category->id); ?>">
                             <td><?php echo e($category->id); ?></td>
                             <td><?php echo e($category->title); ?> </td>
                             <td><?php echo e(count($category->products)); ?> </td>
-                            <td><?php echo e($category->parent_id ==0 ? "Top Level ".count($category->childs)." childs": $category->parent->title); ?> </td>
+                            <td><?php echo e($category->section->title); ?></td>
                             <td>{<?php echo $category->description; ?>}</td>
                             <td><?php echo e($category->slug); ?></td>
                             <td>
@@ -55,11 +53,7 @@
                                     </a>
                                 </div>
                             </td>
-
-
                         </tr>
-
-
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <?php else: ?>
                         <tr>
@@ -68,8 +62,6 @@
                             </td>
                         </tr>
                         <?php endif; ?>
-
-
                 </table>
                 <div class="card-footer float-right">
                     <?php echo e($categories->Links()); ?>
@@ -80,9 +72,7 @@
 
 
         </div>
-
-
-    </div>
+</div>
 </section>
 <?php $__env->stopSection(); ?>
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
@@ -15,13 +16,11 @@ public function products(){
 
 }
 
-public function childs(){
-    return $this->hasMany('App\Models\Category','parent_id','id');
-}
+public function section()
+    {
+        return $this->belongsTo('App\Models\Section');
+    }
 
-public function parent(){
-    return $this->belongsTo('App\Models\Category');
-}
 public function getRouteKeyName(){
     return 'slug';
 }

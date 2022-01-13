@@ -30,22 +30,20 @@
                             <th>#</th>
                             <th>Title</th>
                             <th>Products</th>
-                            <th>parent</th>
+                            <th>Section</th>
                             <th>description</th>
                             <th>slug</th>
                             <th>Actions</th>
-
-
                         </tr>
                     </thead>
                     <tbody>
-                        @if($categories->count() > 0)
+                    @if($categories->count() > 0)
                         @foreach($categories as $category)
                         <tr id="{{$category->id}}">
                             <td>{{$category->id}}</td>
                             <td>{{$category->title}} </td>
                             <td>{{count($category->products)}} </td>
-                            <td>{{$category->parent_id ==0 ? "Top Level ".count($category->childs)." childs": $category->parent->title}} </td>
+                            <td>{{$category->section->title}}</td>
                             <td>{{!! $category->description !!}}</td>
                             <td>{{$category->slug}}</td>
                             <td>
@@ -59,11 +57,7 @@
                                     </a>
                                 </div>
                             </td>
-
-
                         </tr>
-
-
                         @endforeach
                         @else
                         <tr>
@@ -72,8 +66,6 @@
                             </td>
                         </tr>
                         @endif
-
-
                 </table>
                 <div class="card-footer float-right">
                     {{$categories->Links()}}
@@ -83,9 +75,7 @@
 
 
         </div>
-
-
-    </div>
+</div>
 </section>
 @endsection
 

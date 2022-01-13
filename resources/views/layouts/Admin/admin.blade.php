@@ -119,6 +119,17 @@
 
                     <li class="nav-header">Manage Store</li>
 
+
+                    <li class="nav-item">
+                        <a href="{{route('admin.section.index')}}" class="nav-link {{request()->url()==route('admin.section.index')? ' active': ''}}">
+                            <i class="fa fa-folder-open nav-icon" aria-hidden="true"></i>
+                            <p> Sections</p>
+                        </a>
+                    </li>
+
+
+
+
                     <li class="nav-item">
                         <a href="{{route('admin.category.index')}}" class="nav-link {{request()->url()==route('admin.category.index')? ' active': ''}}">
                             <i class="fa fa-th nav-icon" aria-hidden="true"></i>

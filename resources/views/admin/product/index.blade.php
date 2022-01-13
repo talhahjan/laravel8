@@ -64,7 +64,7 @@
                             <td>
                                 @if($product->categories()->count() > 0)
                                 @foreach($product->categories as $category)
-                                {{$category->title}},
+                                {{$category->section->title. '/' .$category->title}},
                                 @endforeach
                                 @else
                                 <strong>No thumbnail</strong>

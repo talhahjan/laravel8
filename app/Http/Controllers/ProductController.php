@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Thumbnail;
+use App\Models\Section;
 use App\Models\Brand;
 use Validator;
 
@@ -39,10 +40,10 @@ class ProductController extends Controller
 
 
         $brands = Brand::select('id', 'title')->get();
-        $categories = Category::select('id', 'title')->where('parent_id', 0)->get();
+        $sections = Section::select('id', 'title')->get();
         $sizes=config('services.sizes');
         $colors=config('services.colors');
-        return view('admin.product.create', compact('brands', 'categories','sizes','colors'));
+        return view('admin.product.create', compact('brands', 'sections','sizes','colors'));
     }
 
     /**
@@ -152,13 +153,13 @@ public function single(Product $product){
     {
      
         $brands = Brand::select('id', 'title')->get();
-        $categories = Category::select('id', 'title')->where('status', 1)->where('parent_id', 0)->get();
+        $sections = Section::select('id', 'title')->where('status', 1)->get();
         $sizes=config('services.sizes');
         $colors=config('services.colors');
         $options = json_decode($product->options);
         $ids=($product->categories->count() > 0)  ? Arr::pluck($product->categories->toArray(), 'id') : null;
         return view('admin.product.edit', 
-        compact('product', 'brands', 'sizes', 'colors', 'options','categories','ids'));
+        compact('product', 'brands', 'sizes', 'colors', 'options','sections','ids'));
     }
 
     /**

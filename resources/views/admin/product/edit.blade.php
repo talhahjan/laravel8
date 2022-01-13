@@ -190,11 +190,11 @@ Enable Discount                 </label>
                         <div class="card-body">
                           
 <select  id="categories" data-placeholder="Select a categories single or multiple" class="select2 form-control" name="categories[]" multiple="multiple" style="width: 100%;">
-@foreach($categories as $category)
-<optgroup label="{{$category->title}}">
-@foreach($category->childs as $child)
+@foreach($sections as $section)
+<optgroup label="{{$section->title}}">
+@foreach($section->categories as $child)
 <option value="{{$child->id}}"{{!is_null($ids) &&  in_array($child->id, $ids) ? ' selected': ''}}>
-{{$child->title}}
+{{$section->title .' / ' . $child->title}}
 </option>
 @endforeach
 </optgroup>
