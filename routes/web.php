@@ -36,7 +36,7 @@ Route::group(['as' => 'user.', 'prefix' => '/', 'middleware' => 'auth'], functio
         Route::resource('product',  App\Http\Controllers\ProductController::class);
         Route::resource('section',  App\Http\Controllers\SectionController::class);
         Route::post('thumbnail/destroy', [App\Http\Controllers\ThumbnailController::class,'destroy'])->name('thumbnail.destroy');
-        Route::get('extras',[App\Http\Controllers\AdminController::class,'loadExtra'] )->name('product.extras');
+        Route::get('extras',[App\Http\Controllers\AdminController::class,'loadExtras'] )->name('product.extras');
         Route::post('category/changestatus', [App\Http\Controllers\CategoryController::class,'changeStatus'])->name('category.changestatus');
         Route::post('users/changestatus', [App\Http\Controllers\UserController::class,'changeStatus'])->name('user.changestatus');
         Route::post('product/changestatus', [App\Http\Controllers\ProductController::class,'changeStatus'])->name('product.changestatus');

@@ -27,7 +27,6 @@ class AdminUserProfile extends Seeder
             'email' => 'talhah.jan@gmail.com',
             'password' => Hash::make('password'),
             'role_id' => $role->id,
-
         ]);
         $profile = Profile::create([
             'first_name' => 'Muhammad',
@@ -35,10 +34,8 @@ class AdminUserProfile extends Seeder
             'phone' => '+923212257340',
             'address' => 'Address Address Address Address Address Address Address Address ',
             'user_id' => $user->id,
-            'avatar' => 'uploads/users/avatars/superadmin.jpg',
+            'avatar' => asset('uploads/users/avatars/superadmin.jpg'),
             'slug' => 'muhammad-khalid',
-            'provider' => '',
-            'provider_id' => ''
         ]);
 
 
@@ -59,7 +56,7 @@ class AdminUserProfile extends Seeder
             'address' => 'Address Address Address Address Address Address Address Address ',
             'user_id' => $user->id,
             'slug' => 'muhammad-talhah',
-            'avatar' => 'uploads/users/avatars/admin.jpg',
+            'avatar' => asset('uploads/users/avatars/admin.jpg'),
         ]);
 
 
@@ -82,7 +79,7 @@ class AdminUserProfile extends Seeder
             'address' => 'Address Address Address Address Address Address Address Address ',
             'user_id' => $user->id,
             'slug' => 'muhammad-khalid-dealer',
-            'avatar' => 'uploads/users/avatars/superadmin.jpg',
+            'avatar' => asset('uploads/users/avatars/superadmin.jpg'),
 
         ]);
 
@@ -105,7 +102,7 @@ class AdminUserProfile extends Seeder
             'address' => 'Address Address Address Address Address Address Address Address ',
             'user_id' => $user->id,
             'slug' => 'muhammad-yusuf',
-            'avatar' => 'uploads/users/avatars/customer.jpg',
+            'avatar' => asset('uploads/users/avatars/customer.jpg'),
 
         ]);
 

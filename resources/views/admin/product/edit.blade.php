@@ -332,9 +332,17 @@ Enable Discount                 </label>
                         </span>
                     </div>
                     <div id="collapseExtras" class="collapse" aria-labelledby="Extras" data-parent="#accordion">
-                        <div class="card-body" id="extras">
-                            @include('admin.ajax.extras')
+                        
+                    
+                    <div class="card-body" id="extras">
+@foreach($options as $key =>$val)
+<div class="m-2 p-2 d-flex">
+<span class="m-2 text-dark text-bold" >{{$key}}</span>
+<input class="form-control" value="{{$val}}"  name="extras[{{$key}}]" />
+<button class="btn btn-sm btn-danger pull-right" onClick="return removeThis(this)">  <i class="fa fa-trash"></i></button>
+</div>
 
+@endforeach
                         </div>
                     </div>
                 </div>
@@ -522,32 +530,51 @@ Enable Discount                 </label>
         }
     });
     $('#btn-add').on('click', function(e) {
-        $.get("{{route('admin.product.extras')}}").done(function(data) {
-            $('#extras').append(data);
-        })
+      makeOption();
     })
     $('#btn-remove').on('click', function(e) {
-        $('#opt:last').remove();
+        var extras = document.getElementById('extras');
+        extras.removeChild(extras.lastChild);
+
     });
 
-    const makeOption = (selector) => {
-        var extra = $(selector).val();
-        if (extra == 'custom') {
+    const makeOption = () => {
             let choice = prompt('Please Entile Extra Option');
             if (choice) {
-                var extra = choice;
-                $(selector).append('<option value="' + choice + '" selected>' + choice + ' </option>');
+          
+  // Create a div
+  var div = document.createElement("div");
+  div.className="m-2 p-2 d-flex"
+  div.innerHTML += `
+ 
+ <span class="m-2 text-dark text-bold" >${choice}</span>
+ `;         // Create a text node
 
-                console.log(choice);
+
+// Create a text input
+var text = document.createElement("input");
+text.className="form-control";
+text.setAttribute("type", "text");
+text.setAttribute("name", extras[choice]); // you may want to change this
+
+// add the file and text to the div
+div.appendChild(text);
+
+
+div.innerHTML+=` <button class="btn btn-sm btn-danger pull-right" onClick="return removeThis(this)">  <i class="fa fa-trash"></i></button>`;
+
+
+//Append the div to the container div
+document.getElementById("extras").appendChild(div);
+
             }
 
-        }
-        $(selector).next().find('input').attr('placeholder', 'seperate each ' + extra + ' with semicolm');
-        $(selector).next().find('input').attr('name', 'extras[' + extra + ']');
 
     }
 
-
+function removeThis(e){
+    e.parentNode.remove();
+}
 
 
 

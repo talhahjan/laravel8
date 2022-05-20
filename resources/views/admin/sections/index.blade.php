@@ -67,7 +67,7 @@
                             <td>{{$section->slug}}</td>
                             <td>
                                 <div class="btn-group btn-group-sm" style="max-height: 30px" role="group" aria-label="Basic example">
-                                    <a href="{{route('admin.section.edit',$section->id)}}" class="btn btn-default btn-sm" title="Click To Edit">
+                                    <a href="{{route('admin.section.edit',$section->slug)}}" class="btn btn-default btn-sm" title="Click To Edit">
                                         <i class="fa fa-edit"></i></a>
                                     <a href="#" class="btn btn-default btn-sm" title="Click Enable/Disable Status">
                                         <i class="fa {{$section->status==1 ? 'fa-eye' : 'fa-eye-slash'}}" onclick="changeStatus(this)" aria-hidden="true" id="status_{{$section->id}}"></i> </a>

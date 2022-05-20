@@ -18,7 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('slug')->unique();
-            $table->foreignId('section_id')
+            $table->foreignId('par_id')
             ->constrained('sections')
             ->onUpdate('cascade')
             ->onDelete('cascade');

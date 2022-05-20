@@ -16,6 +16,10 @@ class Section extends Model
         return $this->hasMany('App\Models\category');
     }
     
+
+
     
-    
+    function getRouteKeyName(){
+        return 'slug';
+    }
 }

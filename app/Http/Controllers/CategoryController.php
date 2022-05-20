@@ -66,7 +66,6 @@ class CategoryController extends Controller
         $find=Section::find($request->section_id);
         $slug=Str::slug($find->title." ".$request->title);
 
-
         $category = Category::create([
             'title' => $request->title,
             'description' => $request->description,

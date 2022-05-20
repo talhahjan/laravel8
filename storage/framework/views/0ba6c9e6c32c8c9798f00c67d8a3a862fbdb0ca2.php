@@ -7,6 +7,6 @@
             <option value="custom">Add Custom</option>
         </select>
         <div class="col">
-        <input type='text' class="form-control" name="extras[Size]" placeholder="in case multiple values seprate each item with semicoln i.e ,">
+        <input type='text' class="form-control" placeholder="in case multiple values seprate each item with semicoln i.e ,">
         </div>
         </div><?php /**PATH D:\webserver\www\l8ecom\resources\views/admin/ajax/extras.blade.php ENDPATH**/ ?>

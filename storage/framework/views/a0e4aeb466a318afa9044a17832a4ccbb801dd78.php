@@ -69,7 +69,7 @@
                             <td><?php echo e($section->slug); ?></td>
                             <td>
                                 <div class="btn-group btn-group-sm" style="max-height: 30px" role="group" aria-label="Basic example">
-                                    <a href="<?php echo e(route('admin.section.edit',$section->id)); ?>" class="btn btn-default btn-sm" title="Click To Edit">
+                                    <a href="<?php echo e(route('admin.section.edit',$section->slug)); ?>" class="btn btn-default btn-sm" title="Click To Edit">
                                         <i class="fa fa-edit"></i></a>
                                     <a href="#" class="btn btn-default btn-sm" title="Click Enable/Disable Status">
                                         <i class="fa <?php echo e($section->status==1 ? 'fa-eye' : 'fa-eye-slash'); ?>" onclick="changeStatus(this)" aria-hidden="true" id="status_<?php echo e($section->id); ?>"></i> </a>

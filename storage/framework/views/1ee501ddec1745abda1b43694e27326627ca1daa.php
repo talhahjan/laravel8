@@ -29,7 +29,7 @@
         <!-- accordian star  -->
         <div id="accordion">
             <!-- form start -->
-            <form action="<?php echo e(route('admin.section.update', $section->id)); ?>" method="post" name="form-example-1" id="form-example-1" enctype="multipart/form-data">
+            <form action="<?php echo e(route('admin.section.update', $section->slug)); ?>" method="post" name="form-example-1" id="form-example-1" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('PUT'); ?>
                 <!-- card common start -->
@@ -135,7 +135,7 @@
 
                                 <div class="form-group">
                                     <textarea name="description" id="description" class="textarea" placeholder="Describe category" style="width: 100%; height: 300px;overflow-y:scroll; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
-
+{!<?php echo e($section->desctiption); ?>!}
 
                       </textarea>
                                 </div>
@@ -168,6 +168,8 @@
                                     <div class="form-group">
                                         <label>Meta description</label>
                                         <textarea class="form-control" name="meta_description" id="meta_description" rows="3" placeholder="Enter ...">
+                                        <?php echo $section->meta_description; ?>
+
 
                 </textarea>
                                     </div>
@@ -176,6 +178,8 @@
                                     <div class="form-group">
                                         <label>Meta Title</label>
                                         <textarea class="form-control" name="meta_title" id="meta_title" rows="3" placeholder="Enter ...">
+                                        <?php echo $section->meta_title; ?>
+
 
                 </textarea>
                                     </div>
@@ -189,6 +193,8 @@
                                     <div class="form-group">
                                         <label>Meta Keywords</label>
                                         <textarea class="form-control" name="meta_keywords" id="meta_keywords" rows="3" placeholder="Enter ...">
+                                        <?php echo $section->meta_keywords; ?>
+
 
                 </textarea>
                                     </div>

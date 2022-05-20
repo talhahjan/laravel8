@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\facades\Validator;
+use Illuminate\Support\Arr;
+
 
 use Auth;
 class ApiController extends Controller
@@ -130,25 +132,85 @@ $validator = Validator::make($request->all(),[
       }
       }
       
-     function fetchProducts(Request $request){
-   $data = Product::get();
-   return $data;
+     function fetchProduct(Product $product){
+       $obj=array();
+      $obj['product']=$product;
+      $obj['product']['thumbnails']=$product->thumbnails;
+      $obj['product']['brand']=$product->brand;
+      $obj['sections']=ApiController::fetchSections();
+      $obj['result']=$product ? 1:0;
+      return $obj;
+    }
+
+
+    function fetchCategory(Request $request){
+             
+      $categories = category::with('products')->where('slug', $request->category)->firstOrFail();
+$obj=['sections'=>ApiController::fetchSections()];
+$pbj['products']=array();
+$init=0;
+foreach($categories->products as $product){
+  $init++;
+  $obj['products'][$init-1]=$product;
+  $obj['products'][$init-1]['thumbnails']=$product->thumbnails;
+}
+$obj['result']['total']=$init;
+
+
+return $obj;
+}
+
+  
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     function fetchSections(){
+     $sections=SECTION::with('categories')->get();
+    return $sections;
+    }
+
+          function fetchSection(Request $request){
+           
+            $section = Section::with('categories')->where('slug', $request->section)->firstOrFail();
+            $obj = array();
+            $init=0;
+            $ids=[];
+             foreach ($section->categories as $category) {
+foreach($category->products as $product){
+
+if(in_array($product->id, $ids)){
+  continue;
+}
+array_push($ids, $product->id);
+
+  $init++;
+$obj['products'][$init-1]=$product;
+$obj['products'][$init-1]['thumbnails']=$product->thumbnails;
+$obj['products'][$init-1]['categories']=$product->categories;
+}
+  }
+$obj['categories']=$section->categories;
+$obj['result']['total']=$init;
+return $obj;
      }
 
 
-     function fetchCategories(Request $request){
-   $data = Category::get();
-
-   return $data;
-      
-     }
-
-          function fetchSections(Request $request){
-            $data = Section::select('id','title','description')->with('categories:id,title,description,slug')
-          ->get();
-
-   return $data;
-     }
 
 
           function fetchBrands(Request $request){
@@ -163,7 +225,7 @@ $validator = Validator::make($request->all(),[
 
    return $data;
      }
-
+    
 function getUserInfo(){
 $userId=auth()->user()['id'];
 $userInfo=User::where('id', $userId)->with('profile')->first();

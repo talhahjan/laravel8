@@ -20,9 +20,10 @@ Route::post("logout", [ApiController::class, 'logout'])->name('logout');
 });
 
 Route::group(['as' => 'api.', 'prefix' => '/'], function () {
-Route::get("products", [ApiController::class, 'fetchProducts'])->name('product');
-Route::get("sections", [ApiController::class, 'fetchSections'])->name('section');
-Route::get("categories", [ApiController::class, 'fetchCategories'])->name('categories');
+Route::get("sections", [ApiController::class, 'fetchSections'])->name('sections');
+Route::get("product/{product}", [ApiController::class, 'fetchProduct'])->name('product');
+Route::get("section/{section}", [ApiController::class, 'fetchSection'])->name('section');
+Route::get("category/{category}", [ApiController::class, 'fetchCategory'])->name('category');
 Route::get("brands", [ApiController::class, 'fetchBrands'])->name('brands');
 Route::post("login", [ApiController::class, 'login'])->name('login');
 Route::post("register", [ApiController::class, 'register'])->name('register');

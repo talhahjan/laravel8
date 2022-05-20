@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Arr;
-
+use Illuminate\Support\Str;
 use App\Http\Requests\StoreProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -55,14 +55,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        // make stock by sizes jsone data 
-        $stocks=str_replace("}", "", $request->stock);
-        $stocks=str_replace("{", "", $stocks);
-        $stocks=explode(',', $stocks);
 
-    //    dd($request->slug);
 
-       
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'price' => 'required|numeric',
@@ -74,24 +68,30 @@ class ProductController extends Controller
            'categories'=>'required'
         ]);
 
+        $options=[];
+        foreach($request->extras as $key => $val){
+        if(str::contains($val, ","))
+        $options[$key]=explode(",",$val);
+        else
+        $options[$key]=$val;
+        }       
+        
 
 
-
-        //   dd($request->size_range);
         // creates an array of selected Ids f categories
         $product = Product::create([
             'title' => $request->title,
             'slug' => $request->slug,
             'description' => $request->description,
             'status' => $request->status,
-            'options' => isset($request->extras) ? json_encode($request->extras) : null,
+            'options' => isset($request->extras) ? json_encode($options) : null,
             'brand_id' => $request->brand_id,
             'featured' => isset($request->featured) ? 1 : 0,
             'price' => $request->price,
             'discount_price'=>$request->discount_price,
             'discount'=>isset($request->discount) ? 1: 0,
             'color' => $request->product_color,
-            'stock' => json_encode($stocks),
+            'stock' => $request->stock,
             'size_range' =>$request->size_range,
         ]);
  
@@ -106,7 +106,7 @@ class ProductController extends Controller
                 $name = $name . $extension;
                 $path = $thumbnail->storeAs('products/thumbnails', $name, 'local');
                 $thumb = Thumbnail::create([
-                    'path' => 'uploads/' . $path,
+                    'path' => asset('uploads/' . $path),
                     'product_id' => $product->id,
                 ]);
             }
@@ -151,7 +151,6 @@ public function single(Product $product){
 
      public function edit(Product $product)
     {
-     
         $brands = Brand::select('id', 'title')->get();
         $sections = Section::select('id', 'title')->where('status', 1)->get();
         $sizes=config('services.sizes');
@@ -196,7 +195,7 @@ public function single(Product $product){
                 $name = $name . $extension;
                 $path = $thumbnail->storeAs('products/thumbnails', $name, 'local');
                 $thumb = Thumbnail::create([
-                    'path' => 'uploads/' . $path,
+                    'path' => asset('uploads/' . $path),
                     'product_id' => $product->id,
                 ]);
             }
