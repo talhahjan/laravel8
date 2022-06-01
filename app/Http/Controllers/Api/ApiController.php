@@ -132,15 +132,16 @@ $validator = Validator::make($request->all(),[
       }
       }
       
-     function fetchProduct(Product $product){
-       $obj=array();
-      $obj['product']=$product;
-      $obj['product']['thumbnails']=$product->thumbnails;
-      $obj['product']['brand']=$product->brand;
-      $obj['sections']=ApiController::fetchSections();
-      $obj['result']=$product ? 1:0;
-      return $obj;
-    }
+      function fetchProduct(Product $product){
+          $obj=array();
+       $obj['product']=$product;
+       $obj['product']['thumbnails']=$product->thumbnails;
+       $obj['product']['brand']=$product->brand;
+       $obj['sections']=ApiController::fetchSections();
+       $obj['result']=$product ? 1:0;
+       return $obj;
+     }
+ 
 
 
     function fetchCategory(Request $request){

@@ -276,7 +276,7 @@ Enable Discount                 </label>
 <!-- stock availibilty by size  -->
 <div class="form-group">
     <label for="stock">Stock Availibility By Size</label>
-    <input type="text" class="form-control" id="stock"  name="stock" placeholder="1-2, 2-3" >
+    <input type="text" class="form-control" id="stock" value="{{$stock}}" name="stock" placeholder="1-2, 2-3" >
     <small class="form-text text-muted">Please tell us how many pairs of which size you have in this product i.e {1-2, 2-3} means you have 2 pairs of size 1 and 3 pairs of size 2</small>
   </div>
 <!-- stock availibilty by size  -->
@@ -578,24 +578,23 @@ function removeThis(e){
 
 
 
-
 const createStock = () => {
 let sizeRange=$('#size_range option:selected').val();
 let split=sizeRange.split("-");
-let text='';
+let text='{';
 
 for (i = split[0]; i < parseInt(split[1])+1; i++) {
-  text +=`${i}-2`;
+  text +=`"${i}":2`;
   if(i < parseInt(split[1]))
   text+=',';
 
 }
-
-
+text+='}';
 $('#stock').attr("value", text);
 
 
 }
+
 
 $('#size_range').on("change",function() {
     createStock();

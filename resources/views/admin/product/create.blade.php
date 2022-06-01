@@ -274,8 +274,8 @@ Enable Discount             </label>
 <!-- stock availibilty by size  -->
 <div class="form-group">
     <label for="stock">Stock Availibility By Size</label>
-    <input type="text" class="form-control" id="stock"  name="stock" value="{{old('stock')}}" placeholder="1-2, 2-3, 3-5">
-    <small class="form-text text-muted">Please tell us how many pairs of which size you have in this product i.e 1-2, 2-3 means you have 2 pairs of size 1 and 3 pairs of size 2</small>
+    <input type="text" class="form-control" id="stock"  name="stock" value="{{old('stock')}}" placeholder='"1":2, "2":3, "3":5'>
+    <small class="form-text text-muted">Please tell us how many pairs of which size you have in this product i.e "1":2, "2":3 means you have 2 pairs of size 1 and 3 pairs of size 2</small>
   </div>
 <!-- stock availibilty by size  -->
 
@@ -322,22 +322,19 @@ Enable Discount             </label>
                     <div class="card-header d-flex" id="Extras">
                         <h5 class="mb-0">
                             <button type="button" class="btn btn-outline collapsed" data-toggle="collapse" data-target="#collapseExtras" aria-expanded="false" aria-controls="collapseExtras">
-                                <strong> Extras</strong>
+                                <strong> Attributes</strong>
                             </button>
 
                         </h5>
-                        <span class="ml-auto" id="collapseExtras">
-                            <button type="button" id="btn-add" class="btn  btn-outline-primary btn-sm" style="display:inline">+</button>
-                            <button type="button" id="btn-remove" class="btn btn-outline-danger btn-sm" style="display:inline">-</button>
-                        </span>
+                    
                     </div>
                     <div id="collapseExtras" class="collapse" aria-labelledby="Extras" data-parent="#accordion">
                         <div class="card-body" id="extras">
                           <div class="m-2 p-2 d-flex">
 
                           <span class="m-2 text-dark text-bold" >Origin</span>
-<input class="form-control" name="extras[origin]" />
-<button class="btn btn-sm btn-danger pull-right" onClick="return removeThis(this)">  <i class="fa fa-trash"></i></button>
+<input class="form-control" name="origin" value="Pakistan" />
+
                         </div>
 
 
@@ -345,24 +342,22 @@ Enable Discount             </label>
                         <div class="m-2 p-2 d-flex">
 
 <span class="m-2 text-dark text-bold" >Article</span>
-<input class="form-control" name="extras[article]" />
-<button class="btn btn-sm btn-danger pull-right" onClick="return removeThis(this)">  <i class="fa fa-trash"></i></button>
+<input class="form-control" type="text"  name="article"  />
 </div>
 
 
 <div class="m-2 p-2 d-flex">
 
 <span class="m-2 text-dark text-bold" >Material</span>
-<input class="form-control" name="extras[material]" />
-<button class="btn btn-sm btn-danger pull-right" onClick="return removeThis(this)">  <i class="fa fa-trash"></i></button>
+<input class="form-control" type="text"  name="materials" data-role="tagsinput" value="pu,leather,fabric" />
+
 </div>
 
 
 <div class="m-2 p-2 d-flex">
 
 <span class="m-2 text-dark text-bold" >Warranty</span>
-<input class="form-control" name="extras[waranty]" />
-<button class="btn btn-sm btn-danger pull-right" onClick="return removeThis(this)">  <i class="fa fa-trash"></i></button>
+<input class="form-control" type="text"  name="warranty" value="No warranty" />
 </div>
 
 
@@ -370,8 +365,8 @@ Enable Discount             </label>
 <div class="m-2 p-2 d-flex">
 
 <span class="m-2 text-dark text-bold" >Features</span>
-<input class="form-control" name="extras[features]" />
-<button class="btn btn-sm btn-danger pull-right" onClick="return removeThis(this)">  <i class="fa fa-trash"></i></button>
+<input class="form-control" type="text"  name="features" data-role="tagsinput" value="Good Looking,washable,Shock absorbent, Designer,Light Weight, Comfortable" />
+
 </div>
 
 
@@ -399,10 +394,14 @@ Enable Discount             </label>
 
 @section('Css')
 <!-- Select2 -->
-<link rel="stylesheet" href="{{asset('assets/admin_plugins/select2/css/select2.min.css')}}">
-<link rel="stylesheet" href="{{asset('assets/admin_plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/admin_plugins/select2/css/select2.min.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/admin_plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}" />
+<!-- tags Input  -->
+<link rel="stylesheet" href="{{asset('assets/admin_plugins/taginput/tagsinput.css')}}" />
+
 <!-- summernote -->
-<link rel="stylesheet" href="{{ asset('assets/admin_plugins/summernote/summernote-bs4.css')}}">
+<link rel="stylesheet" href="{{ asset('assets/admin_plugins/summernote/summernote-bs4.css')}}" />
+
 <style>
     .upload__box {
         padding: 5px;
@@ -474,6 +473,8 @@ Enable Discount             </label>
 <script src="{{asset('assets/admin_plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- summernote bs4 -->
 <script src="{{asset('assets/admin_plugins/summernote/summernote-bs4.min.js')}}"></script>
+<!-- Tags Input  -->
+<script src="{{asset('assets/admin_plugins/taginput/tagsinput.js')}}"></script>
 <script>
     $(function() {
         //Initialize Select2 Elements
@@ -563,52 +564,9 @@ Enable Discount             </label>
             theme: 'spacelab'
         }
     });
-    $('#btn-add').on('click', function(e) {
-      makeOption();
-    })
-    $('#btn-remove').on('click', function(e) {
-        var extras = document.getElementById('extras');
-        extras.removeChild(extras.lastChild);
 
-    });
-
-    const makeOption = () => {
-            let choice = prompt('Please Entile Extra Option');
-            if (choice) {
-          
-  // Create a div
-  var div = document.createElement("div");
-  div.className="m-2 p-2 d-flex"
-  div.innerHTML += `
- 
- <span class="m-2 text-dark text-bold" >${choice}</span>
- `;         // Create a text node
-
-
-// Create a text input
-var text = document.createElement("input");
-text.className="form-control";
-text.setAttribute("type", "text");
-text.setAttribute("name", extras[choice]); // you may want to change this
-
-// add the file and text to the div
-div.appendChild(text);
-
-
-div.innerHTML+=` <button class="btn btn-sm btn-danger pull-right" onClick="return removeThis(this)">  <i class="fa fa-trash"></i></button>`;
-
-
-//Append the div to the container div
-document.getElementById("extras").appendChild(div);
-
-            }
-
-
-    }
-
-function removeThis(e){
-    e.parentNode.remove();
-}
+    
+  
 
 // In your Javascript (external .js resource or <script> tag)
 $(document).ready(function() {
@@ -616,11 +574,10 @@ $(document).ready(function() {
     $('#product_color').select2();
 });
 
-
 const createStock = () => {
 let sizeRange=$('#size_range option:selected').val();
 let split=sizeRange.split("-");
-let text='{';
+let text='';
 
 for (i = split[0]; i < parseInt(split[1])+1; i++) {
   text +=`"${i}":2`;
@@ -628,7 +585,6 @@ for (i = split[0]; i < parseInt(split[1])+1; i++) {
   text+=',';
 
 }
-text+='}';
 $('#stock').attr("value", text);
 
 
@@ -643,7 +599,6 @@ $('#size_range').on("change",function() {
 
 
 </script>
-
 
 
 

@@ -17,16 +17,20 @@ class CreateProductsTable extends Migration
         $table->id();
             $table->string('title');
             $table->mediumText('description');
-            $table->double('price');
             $table->integer('discount')->default(0);
             $table->string('discount_price')->nullable();
-            $table->string('color');
             $table->json('stock');   // stock within size i.e {6-2,7-1} it means we have 2 pairs of size 6 and 1 of size 7
             $table->text('size_range'); // result passed by a predefined array of sizes to populate size range 
             $table->string('slug')->unique();
             $table->integer('status')->default(1);
             $table->integer('featured')->default(0);
-            $table->json('options')->nullable();
+            $table->double('price');
+            $table->string('color');
+            $table->string('warranty')->nullable();
+            $table->string('origin')->nullable();
+            $table->string('article')->nullable();
+            $table->json('materials')->nullable();
+            $table->json('features')->nullable();
             $table->foreignId('brand_id')->nullable()
             ->constrained('brands')
             ->onUpdate('cascade')

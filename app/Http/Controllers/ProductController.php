@@ -57,46 +57,45 @@ class ProductController extends Controller
 
 
 
-        $validatedData = $request->validate([
+   $validatedData = $request->validate([
             'title' => 'required|max:255',
+            'description'=>'required|min:255',
             'price' => 'required|numeric',
-           'discount_price' => 'required|numeric',
-           'discount' => 'numeric',
             'product_color' => 'required',
+            'slug'=>'required',
             'size_range' => 'required',
             'stock' => 'required',
            'categories'=>'required'
         ]);
 
-        $options=[];
-        foreach($request->extras as $key => $val){
-        if(str::contains($val, ","))
-        $options[$key]=explode(",",$val);
-        else
-        $options[$key]=$val;
-        }       
-        
-
-
+       // make stock by sizes jsone data 
+       $stocks=explode(',', $request->stock);
+       $attributes_features=explode(',', $request->features);
+       $attributes_materials=explode(',', $request->materials);
+    
         // creates an array of selected Ids f categories
         $product = Product::create([
-            'title' => $request->title,
+            'title' => ucwords($request->title),
             'slug' => $request->slug,
             'description' => $request->description,
             'status' => $request->status,
-            'options' => isset($request->extras) ? json_encode($options) : null,
             'brand_id' => $request->brand_id,
             'featured' => isset($request->featured) ? 1 : 0,
             'price' => $request->price,
             'discount_price'=>$request->discount_price,
             'discount'=>isset($request->discount) ? 1: 0,
             'color' => $request->product_color,
-            'stock' => $request->stock,
+            'stock' => json_encode($stocks),
             'size_range' =>$request->size_range,
+            'origin'=>$request->origin,
+            'article'=>$request->article,
+            'warranty'=>$request->warranty,
+            'features'=>$request->features ? json_encode($attributes_features): null,
+            'materials'=>$request->materials ? json_encode($attributes_materials): null,
         ]);
  
-
-        // attach categories in pivot table 
+     
+            // attach categories in pivot table 
         $product->categories()->attach($request->categories);
 
         if (isset($request->thumbnails)) {
@@ -106,7 +105,7 @@ class ProductController extends Controller
                 $name = $name . $extension;
                 $path = $thumbnail->storeAs('products/thumbnails', $name, 'local');
                 $thumb = Thumbnail::create([
-                    'path' => asset('uploads/' . $path),
+                    'path' => 'uploads/' . $path,
                     'product_id' => $product->id,
                 ]);
             }
@@ -132,6 +131,9 @@ class ProductController extends Controller
         $categories = Category::select('id', 'title')->where('parent_id', 0)->get();
         $sizes=config('services.sizes');
         $colors=config('services.colors');
+
+
+
 return view('user.products.all', compact('products','brands','categories','sizes','colors'));
     }    
 /**
@@ -145,6 +147,7 @@ return view('user.products.all', compact('products','brands','categories','sizes
 public function single(Product $product){
     $brands = Brand::select('id', 'title')->get();
     $categories = Section::select('id', 'title')->where('status', 1)->get();
+    dd($product->options);
     return view('user.products.single', compact('product','categories','brands'));
 }
 
@@ -156,9 +159,12 @@ public function single(Product $product){
         $sizes=config('services.sizes');
         $colors=config('services.colors');
         $options = json_decode($product->options);
+        $stock=$product->stock;
+
+        
         $ids=($product->categories->count() > 0)  ? Arr::pluck($product->categories->toArray(), 'id') : null;
         return view('admin.product.edit', 
-        compact('product', 'brands', 'sizes', 'colors', 'options','sections','ids'));
+        compact('product', 'brands', 'sizes', 'colors', 'options','sections','ids','stock'));
     }
 
     /**
@@ -171,59 +177,60 @@ public function single(Product $product){
     public function update(Request $request, Product $product)
     {
 
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'price' => 'required|numeric',
-            'discount_price' => 'numeric',
-            'discount' => 'numeric',
-            'product_color' => 'required',
-            'size_range' => 'required',
-            'stock' => 'required',
-           'categories'=>'required'
+        // $validatedData = $request->validate([
+        //     'title' => 'required|max:255',
+        //     'price' => 'required|numeric',
+        //     'product_color' => 'required',
+        //     'size_range' => 'required',
+        //     'stock' => 'required',
+        //    'categories'=>'required'
 
-        ]);
+        // ]);
         
         // make stock by sizes jsone data 
         $stocks=str_replace("}", "", $request->stock);
         $stocks=str_replace("{", "", $stocks);
         $stocks=explode(',', $stocks);
 
-        if (isset($request->thumbnails)) {
-            foreach ($request->thumbnails as $thumbnail) {
-                $extension = "." . $thumbnail->getClientOriginalExtension();
-                $name = basename($thumbnail->getClientOriginalName(), $extension) . time();
-                $name = $name . $extension;
-                $path = $thumbnail->storeAs('products/thumbnails', $name, 'local');
-                $thumb = Thumbnail::create([
-                    'path' => asset('uploads/' . $path),
-                    'product_id' => $product->id,
-                ]);
-            }
-        }
+
+
+
+        // if (isset($request->thumbnails)) {
+        //     foreach ($request->thumbnails as $thumbnail) {
+        //         $extension = "." . $thumbnail->getClientOriginalExtension();
+        //         $name = basename($thumbnail->getClientOriginalName(), $extension) . time();
+        //         $name = $name . $extension;
+        //         $path = $thumbnail->storeAs('products/thumbnails', $name, 'local');
+        //         $thumb = Thumbnail::create([
+        //             'path' => 'uploads/' . $path,
+        //             'product_id' => $product->id,
+        //         ]);
+        //     }
+        // }
             $updateProduct = Product::where("id", $product->id)->update([
-                'title' => $request->title,
-                'slug' => $request->slug,
-                'description' => $request->description,
-                'status' => $request->status,
-                'options' => isset($request->extras) ? json_encode($request->extras) : null,
-                'brand_id' => $request->brand_id,
-                'featured' => isset($request->featured) ? 1 : 0,
-                'price' => $request->price,
-                'discount_price'=>$request->discount_price,
-                'discount'=>isset($request->discount) ? 1: 0,
-                'color' => $request->product_color,
-                'stock' => json_encode($stocks),
-                'size_range' =>$request->size_range,
-                //'size_range' =>str_replace('-', '_', $request->size_range),
+                // 'title' => $request->title,
+                // 'slug' => $request->slug,
+                // 'description' => $request->description,
+                // 'status' => $request->status,
+                'options' => substr($product->options,1-1),
+                // 'brand_id' => $request->brand_id,
+                // 'featured' => isset($request->featured) ? 1 : 0,
+                // 'price' => $request->price,
+                // 'discount_price'=>$request->discount_price,
+                // 'discount'=>isset($request->discount) ? 1: 0,
+                // 'color' => $request->product_color,
+                // 'stock' => json_encode($stocks),
+                // 'size_range' =>$request->size_range,
+                // //'size_range' =>str_replace('-', '_', $request->size_range),
 
     
             ]);
 
         // detach previously saved categories
-        $product->categories()->detach();
+        // $product->categories()->detach();
        
         // attach updated categories 
-         $product->categories()->attach($request->categories);
+        //  $product->categories()->attach($request->categories);
 
         if ($updateProduct) {
             return back()->with('message', 'Section has been updated success fully :)');
