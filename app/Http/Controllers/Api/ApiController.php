@@ -81,7 +81,12 @@ return response()->json([
     }
 
 
+private function getlatestProduct(){
+$products=Product::with('thumbnails','categories')->orderBy('created_at', 'DESC')->take(10)->get();
 
+return $products;
+
+}
     function login(Request $request){
 $validator = Validator::make($request->all(),[
   'email' => ['required', 'string', 'email'],
@@ -132,38 +137,115 @@ $validator = Validator::make($request->all(),[
       }
       }
       
-      function fetchProduct(Product $product){
-          $obj=array();
-       $obj['product']=$product;
-       $obj['product']['thumbnails']=$product->thumbnails;
-       $obj['product']['brand']=$product->brand;
-       $obj['sections']=ApiController::fetchSections();
-       $obj['result']=$product ? 1:0;
-       return $obj;
+      function fetchProduct(Request  $request){
+      $product=Product::with('thumbnails','categories')->where('slug', $request->slug)->first();
+      if(!$product)
+      return response()->json([ 
+        'response'=>[  
+        'status'=>404,
+      'message'=>'Page Not Found'
+      ],
+
+      ]);
+       $sections=Section::with('categories')->where('status', 1)->get();
+    
+
+       
+       return response()->json([ 
+      'response'=>[  
+       'status'=>201,
+       'message'=>'ok'
+    ],
+'data'=>
+['product'=>$product,
+'sections'=>$sections,]
+
+     ]);
      }
  
 
 
     function fetchCategory(Request $request){
-             
-      $categories = category::with('products')->where('slug', $request->category)->firstOrFail();
+         
+$categories = category::with(['products' => function($query){
+  $query->with(['thumbnails','categories'=> function($query){
+    $query->with('section');
+  }]); //you may use any condition here or manual select operation
+}])->where('slug', $request->category)->first();
+
+if(!$categories)
+return  response()->json([
+'response'=>[  
+  'status'=>404,
+  'message'=>'Oops: Page Not Found'
+],]);
+
 $obj=['sections'=>ApiController::fetchSections()];
 $pbj['products']=array();
 $init=0;
 foreach($categories->products as $product){
   $init++;
   $obj['products'][$init-1]=$product;
-  $obj['products'][$init-1]['thumbnails']=$product->thumbnails;
 }
 $obj['result']['total']=$init;
 
-
-return $obj;
+return response()->json([ 
+  'response'=>[ 
+  'status'=>201,
+  'message'=>'ok'
+],
+'data'=>
+$obj
+ ]);
 }
 
   
-           
+function fetchSection(Request $request){
+         
+$section=Section::all();
+  $sections = Section::with(['categories' => function($query){
+    $query->with(['products'=> function($query){
+      $query->with(['thumbnails','categories'=> function($query){
+        $query->with('section');
+      }]);
+    }]); //you may use any condition here or manual select operation
+  }])->where('slug', $request->section)->first();
+  if(!$sections)
+  return  response()->json([
+  'response'=>[  
+    'status'=>404,
+    'message'=>'Oops: Page Not Found'
+  ],]);
+  
+$obj=['sections'=>$section];
+  $obj['products']=[];
+  $init=0;
+ 
 
+
+foreach($sections->categories as $category){
+  //count categgories
+foreach($category->products as $product){
+  //play with products
+$init++;
+  $obj['products'][$init-1]=$product;
+}
+
+}
+$obj['result']['total']=count($obj['products']);
+
+
+  return response()->json([ 
+    'response'=>[ 
+    'status'=>201,
+    'message'=>'ok'
+  ],
+  'data'=>
+  $obj
+   ]);
+  }
+  
+    
 
 
 
@@ -183,34 +265,12 @@ return $obj;
 
      function fetchSections(){
      $sections=SECTION::with('categories')->get();
-    return $sections;
+     $obj['sections']=$sections;
+     $obj['latest']=$this->getlatestProduct();
+    return $obj;
     }
 
-          function fetchSection(Request $request){
-           
-            $section = Section::with('categories')->where('slug', $request->section)->firstOrFail();
-            $obj = array();
-            $init=0;
-            $ids=[];
-             foreach ($section->categories as $category) {
-foreach($category->products as $product){
-
-if(in_array($product->id, $ids)){
-  continue;
-}
-array_push($ids, $product->id);
-
-  $init++;
-$obj['products'][$init-1]=$product;
-$obj['products'][$init-1]['thumbnails']=$product->thumbnails;
-$obj['products'][$init-1]['categories']=$product->categories;
-}
-  }
-$obj['categories']=$section->categories;
-$obj['result']['total']=$init;
-return $obj;
-     }
-
+        
 
 
 

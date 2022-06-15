@@ -23,14 +23,14 @@ class CategorySectionSeeder extends Seeder
        $categoryTitle='Shoes';
         $category = Category::create([
             'title' => $categoryTitle,
-            'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+                       'slug'=>Str::Slug($section->title.' '.$categoryTitle),
              'section_id'=>$section->id,
         ]);
 
         $categoryTitle='Slipers';
         $category = Category::create([
             'title' => $categoryTitle,
-            'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+                     'slug'=>Str::Slug($section->title.' '.$categoryTitle),
              'section_id'=>$section->id,
         ]);
 
@@ -38,7 +38,7 @@ class CategorySectionSeeder extends Seeder
         $categoryTitle='Canvas';
         $category = Category::create([
             'title' => $categoryTitle,
-            'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+                     'slug'=>Str::Slug($section->title.' '.$categoryTitle),
              'section_id'=>$section->id,
         ]);
 
@@ -46,21 +46,21 @@ class CategorySectionSeeder extends Seeder
         $categoryTitle='Office Shoes';
         $category = Category::create([
             'title' => $categoryTitle,
-            'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+                     'slug'=>Str::Slug($section->title.' '.$categoryTitle),
              'section_id'=>$section->id,
         ]);
 
         $categoryTitle='Casual';
         $category = Category::create([
             'title' => $categoryTitle,
-            'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+                     'slug'=>Str::Slug($section->title.' '.$categoryTitle),
              'section_id'=>$section->id,
         ]);
 
         $categoryTitle='Flip-flops';
         $category = Category::create([
             'title' => $categoryTitle,
-            'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+                     'slug'=>Str::Slug($section->title.' '.$categoryTitle),
              'section_id'=>$section->id,
         ]);
 
@@ -68,7 +68,7 @@ class CategorySectionSeeder extends Seeder
         $categoryTitle='Sliders';
         $category = Category::create([
             'title' => $categoryTitle,
-            'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+                     'slug'=>Str::Slug($section->title.' '.$categoryTitle),
              'section_id'=>$section->id,
         ]);
     
@@ -82,14 +82,14 @@ $section=Section::create([
 $categoryTitle='Shoes';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
 $categoryTitle='Pumps';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
@@ -98,7 +98,7 @@ $category = Category::create([
 $categoryTitle='Kulapuri';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
@@ -106,7 +106,7 @@ $category = Category::create([
 $categoryTitle='Kusas';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
@@ -114,7 +114,7 @@ $category = Category::create([
 $categoryTitle='Sandals';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
@@ -123,7 +123,7 @@ $category = Category::create([
 $categoryTitle='Casual';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
@@ -131,7 +131,7 @@ $category = Category::create([
 $categoryTitle='Wedges';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
@@ -139,7 +139,7 @@ $category = Category::create([
 $categoryTitle='Bridals';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
@@ -147,7 +147,7 @@ $category = Category::create([
 $categoryTitle='Highy Heels';
 $category = Category::create([
     'title' => $categoryTitle,
-    'slug'=>Str::Slug($sectionTitle.' '.$categoryTitle),
+             'slug'=>Str::Slug($section->title.' '.$categoryTitle),
      'section_id'=>$section->id,
 ]);
 
